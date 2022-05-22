@@ -3,12 +3,12 @@
 
 ## Application Imports
 import KivyGUI
-import Lib
+import Library
 
 
 ## Library Imports
 
 
 if __name__ == '__main__':
-    Lib.Initialize()
+    Library.Initialize()
     KivyGUI.Initialize()
