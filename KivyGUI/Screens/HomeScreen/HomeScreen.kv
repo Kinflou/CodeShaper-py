@@ -1,0 +1,101 @@
+## System Imports
+
+
+## Application Imports
+#: import ProjectDetailsScreen Screens.HomeScreen.Screens.ProjectDetailsScreen.ProjectDetailsScreen
+#: import RecentProjectsScreen Screens.HomeScreen.Screens.RecentProjectsScreen.RecentProjectsScreen
+
+
+## Library Imports
+
+
+<HomeScreen>:
+    name: 'home_screen'
+
+    BoxLayout:
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: dp(.25), 1
+            canvas.before:
+                Color:
+                    rgba: .5, .5, .5, 1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+
+            Image:
+                size_hint: 1, dp(.35)
+                source: 'Assets/logo/CodeShaper-logos_transparent_cut.png'
+                canvas.before:
+                    Color:
+                        rgba: .5, .5, .5, 1
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+            BoxLayout:
+                orientation: 'vertical'
+
+                MDTabs:
+                    tab_bar_height: 40
+                    text_color_active: get_color_from_hex("#ffd700")
+                    underline_color: app.theme_cls.primary_dark
+
+
+                    Tab:
+                        title: 'Configs'
+                        icon: 'cog'
+
+                        StackLayout:
+                            id: configurations_layout
+
+                    Tab:
+                        title: 'Projects'
+                        icon: 'family-tree'
+
+                        StackLayout:
+                            id: projects_layout
+
+        ScreenManager:
+            id: screens
+
+            RecentProjectsScreen:
+            ProjectDetailsScreen:
+
+
+<ConfigurationItem>:
+    canvas.before:
+        Color:
+            rgba: .8, .8, .8, 1
+        Line:
+            width: 2
+            rectangle: self.x, self.y, self.width, self.height
+
+    size_hint_max_y: dp(150)
+    on_touch_up: root.on_open()
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDLabel:
+            id: name
+            padding: 5, 5
+            halign: 'center'
+            font_style: 'H6'
+
+        MDLabel:
+            id: path
+            size_hint: 1, dp(.2)
+            padding: 5, 5
+            halign: 'center'
+            font_style: 'Body2'
+
+<ProjectItem>:
+    max_size: 1, dp(.2)
+
+    MDLabel:
+        id: name
+
+    MDLabel:
+        id: path
