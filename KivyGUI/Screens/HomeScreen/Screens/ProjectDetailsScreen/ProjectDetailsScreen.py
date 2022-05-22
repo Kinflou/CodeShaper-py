@@ -5,7 +5,7 @@ from typing import Optional
 
 ## Application Imports
 from KivyGUI import utils
-from Lib.Shaping.Project.data import ShapingConfiguration
+from Library.Shaping.Project.data import ShapingConfiguration
 
 
 ## Library Imports

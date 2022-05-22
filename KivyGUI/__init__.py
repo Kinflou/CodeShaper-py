@@ -2,7 +2,7 @@
 
 
 ## Application Imports
-import Lib
+import Library
 from KivyGUI.App import App
 
 
@@ -10,7 +10,7 @@ from KivyGUI.App import App
 
 
 def Initialize():
-    Lib.Initialize()
+    Library.Initialize()
     App().run()
 
 

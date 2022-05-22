@@ -3,8 +3,8 @@
 
 ## Application Imports
 from KivyGUI import utils, App
-from Lib.Managers import Shaping
-from Lib.Shaping.Project.data import ShapingConfiguration
+from Library.Managers import Shaping
+from Library.Shaping.Project.data import ShapingConfiguration
 
 
 ## Library Imports
