@@ -1,0 +1,85 @@
+## System Imports
+
+
+## Application Imports
+
+
+## Library Imports
+
+
+<ProjectDetailsScreen>:
+    name: 'project_details_screen'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDLabel:
+            id: name
+            size_hint: 1, dp(.1)
+            font_style: 'H5'
+            halign: 'center'
+            text: root.config_name
+
+        DescriptionRstDocument:
+            id: description
+
+            size_hint: 1, 1
+            halign: 'center'
+            text: root.description
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, dp(.4)
+
+            BoxLayout:
+                canvas:
+                    Color:
+                        rgba: .5, .5, .5, 1
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+                orientation: 'vertical'
+
+                BoxLayout:
+                    padding: 15, 0
+
+                    MDLabel:
+                        pos_hint: {'center_y': dp(.5)}
+                        text: f'Shape Project Directory: {root.project_path}'
+
+                    MDRectangleFlatButton:
+                        pos_hint: {'center_y': dp(.5)}
+                        text: 'Browse'
+
+                BoxLayout:
+                    padding: 15, 0
+
+                    MDLabel:
+                        pos_hint: {'center_y': dp(.5)}
+                        text: f'Target Source Location: {root.target_path}'
+
+                    MDRectangleFlatButton:
+                        pos_hint: {'center_y': dp(.5)}
+                        text: 'Browse'
+
+            BoxLayout:
+                canvas:
+                    Color:
+                        rgba: .5, .5, .5, 1
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+                size_hint: 1, dp(0.35)
+
+                MDRectangleFlatButton:
+                    size_hint: dp(.5), 1
+                    text: 'Go Back'
+                    on_release: root.go_back()
+
+                MDRectangleFlatButton:
+                    size_hint: dp(.5), 1
+                    text: 'Open Project'
+                    on_release: root.open_project()
+

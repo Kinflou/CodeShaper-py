@@ -1,0 +1,20 @@
+## System Imports
+
+
+## Application Imports
+#: import HomeScreen Screens.HomeScreen.HomeScreen
+#: import ShapingScreen Screens.ShapingScreen.ShapingScreen
+
+
+## Library Imports
+#: import WipeTransition kivy.uix.screenmanager.WipeTransition
+
+
+ScreenManager:
+    id: screens
+
+    transition: WipeTransition()
+
+    HomeScreen:
+    ShapingScreen:
+

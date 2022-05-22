@@ -1,0 +1,31 @@
+## System Imports
+
+
+## Application Imports
+
+
+## Library Imports
+
+
+<RoundButton>:
+
+    canvas:
+        Color:
+            rgba: [1, 1, 1, .5]
+        Ellipse:
+            size:
+                [self.size[0] - root.OFFSET_x + 2,
+                self.size[1] - root.OFFSET_y + 2]
+            pos:
+                [self.pos[0] + root.OFFSET_x / 2.0 + 1,
+                self.pos[1] + root.OFFSET_y / 2.0 + 1]
+
+        Color:
+            rgba: [.3, .3, .3, 1]
+        Ellipse:
+            size:
+                [self.size[0] - root.OFFSET_x + 2,
+                self.size[1] - root.OFFSET_y + 2]
+            pos:
+                [self.pos[0] + root.OFFSET_x / 2.0 + 1,
+                self.pos[1] + root.OFFSET_y / 2.0 + 1]

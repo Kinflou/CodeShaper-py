@@ -1,0 +1,164 @@
+## System Imports
+
+
+## Application Imports
+#: import NavigationMenu Widgets.NavigationBar.NavigationBar
+#: import RoundButton Widgets.RoundButton.RoundButton
+
+
+## Library Imports
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+
+
+<ShapingScreen>:
+    name: 'shaping_screen'
+
+
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: .5, .5, .5, 1
+            Line:
+                width: 1
+                rectangle: self.x, self.y, self.width, self.height
+
+        orientation: 'vertical'
+
+        BoxLayout:
+            size_hint: 1, dp(.06)
+
+        BoxLayout:
+
+            BoxLayout:
+                canvas.before:
+                    Color:
+                        rgba: .5, .5, .5, 1
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+                size_hint: dp(.4), 1
+
+                MDTabs:
+                    tab_bar_height: 25
+                    text_color_active: get_color_from_hex("#ffd700")
+                    underline_color: app.theme_cls.primary_dark
+
+                    Tab:
+                        title: 'Patches'
+                        icon: 'bandage'
+
+                        RelativeLayout:
+                            id: patches_layout
+
+                    Tab:
+                        title: 'Action'
+                        icon: 'gesture-tap'
+
+            BoxLayout:
+                orientation: 'vertical'
+
+                MDTabs:
+                    tab_bar_height: 25
+                    text_color_active: get_color_from_hex("#ffd700")
+                    underline_color: app.theme_cls.primary_dark
+
+                    Tab:
+                        title: 'Visitor'
+                        icon: 'family-tree'
+
+                    Tab:
+                        title: 'Project'
+                        icon: 'file-tree'
+
+                    Tab:
+                        title: 'Results'
+                        icon: 'export'
+
+
+                VisitorController:
+                    size_hint: 1, dp(.2)
+
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: .5, .5, .5, 1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+
+            size_hint: 1, dp(.2)
+
+            MDTextFieldRect:
+                id: logs
+                disabled: True
+                background_color: app.theme_cls.primary_color
+                text: 'Logs'
+
+    NavigationBar:
+
+
+<VisitorController@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: .5, .5, .5, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 0
+
+        MDLabel:
+            text: 'Ready to start visiting'
+
+        BoxLayout:
+            padding: 0, 10
+
+            MDRectangleFlatIconButton:
+                icon: 'play'
+                text: 'Play'
+
+            MDRectangleFlatIconButton:
+                icon: 'stop'
+                text: 'Stop'
+
+            MDLabel:
+                padding: 10, 0
+                text: 'Current File'
+
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 0
+
+        MDLabel:
+            halign: 'right'
+            text: 'Time Elapsed: HH:MM:SS'
+
+        MDLabel:
+            halign: 'right'
+            text: 'Visitor Type'
+
+
+<BreakpointNode>:
+    # canvas:
+    #    Color:
+    #        rgba: 1, 0, 0, 1
+    #    Ellipse:
+    #        pos: self.pos[0] - 5, self.pos[1] + 5
+    #        size: 15, 15
+
+    height: max(label.texture_size[1] + dp(10), dp(24))
+
+    RoundButton:
+        size_hint: dp(.09), 1
+
+    Label:
+        id: label
+        size_hint: (.9, 1)
+        text_size: self.width, None
+        padding: 15, 0
+        text: "test"
+

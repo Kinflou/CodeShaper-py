@@ -1,0 +1,60 @@
+## System Imports
+
+
+## Application Imports
+
+
+## Library Imports
+#: import contextmenu kivy_garden.contextmenu
+
+
+<NavigationBar>:
+
+    AppMenu:
+        id: app_menu
+        top: root.height
+
+        AppMenuTextItem:
+            text: "File"
+            ContextMenu:
+                ContextMenuTextItem:
+                    text: "Open"
+
+                    ContextMenu:
+                        ContextMenuTextItem:
+                            text: "Project"
+                        ContextMenuTextItem:
+                            text: "File"
+
+                ContextMenuTextItem:
+                    text: "Save"
+
+                ContextMenuTextItem:
+                    text: "Close Project"
+                    on_release: root.close_project()
+
+                ContextMenuTextItem:
+                    text: "Exit"
+                    on_release: root.exit_app()
+
+        AppMenuTextItem:
+            text: "Edit"
+            ContextMenu:
+                ContextMenuTextItem:
+                    text: "Actions"
+                    ContextMenu:
+                        ContextMenuTextItem:
+                            text: "Undo"
+                        ContextMenuTextItem:
+                            text: "Redo"
+
+
+        AppMenuTextItem:
+            text: "About"
+            ContextMenu:
+                ContextMenuTextItem:
+                    text: "Help"
+                ContextMenuDivider:
+                ContextMenuTextItem:
+                    text: "About"
+

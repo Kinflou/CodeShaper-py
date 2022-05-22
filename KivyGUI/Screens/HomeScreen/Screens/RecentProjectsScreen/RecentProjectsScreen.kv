@@ -1,0 +1,53 @@
+## System Imports
+
+
+## Application Imports
+
+
+## Library Imports
+
+
+
+<RecentProjectsScreen>:
+    name: 'recent_projects_screen'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDLabel:
+            size_hint: 1, dp(.1)
+            font_style: 'H5'
+            halign: 'center'
+            text: 'Recent Shape Projects'
+
+        StackLayout:
+            id: recent_projects_layout
+
+            canvas.before:
+                Color:
+                    rgba: .5, .5, .5, 1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+
+
+        RelativeLayout:
+            size_hint: 1, dp(.08)
+
+            BoxLayout:
+
+                canvas:
+                    Color:
+                        rgba: .5, .5, .5, 1
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+                MDRectangleFlatButton:
+                    size_hint: 1, 1
+                    text: 'Create new Shaping Project'
+
+                MDRectangleFlatButton:
+                    size_hint: 1, 1
+                    text: 'Open a Shaping Project'
+                    on_release: root.open_project()
