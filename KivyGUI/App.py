@@ -38,6 +38,9 @@ class App(MDApp):
 	def set_screen(self, name: str):
 		self.root.current = name
 	
+	def get_screen(self):
+		return self.root.current_screen
+	
 	def close_project(self):
 		self.root.current = 'home_screen'
 	

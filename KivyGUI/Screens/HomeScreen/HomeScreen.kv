@@ -73,7 +73,34 @@
             rectangle: self.x, self.y, self.width, self.height
 
     size_hint_max_y: dp(150)
-    on_touch_up: root.on_open()
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        on_touch_up: root.on_open()
+
+        MDLabel:
+            id: name
+            padding: 5, 5
+            halign: 'center'
+            font_style: 'H6'
+
+        MDLabel:
+            id: path
+            size_hint: 1, dp(.2)
+            padding: 5, 5
+            halign: 'center'
+            font_style: 'Body2'
+
+<ProjectItem>:
+    canvas.before:
+        Color:
+            rgba: .8, .8, .8, 1
+        Line:
+            width: 2
+            rectangle: self.x, self.y, self.width, self.height
+
+    size_hint_max_y: dp(150)
 
     BoxLayout:
         orientation: 'vertical'
@@ -91,11 +118,3 @@
             halign: 'center'
             font_style: 'Body2'
 
-<ProjectItem>:
-    max_size: 1, dp(.2)
-
-    MDLabel:
-        id: name
-
-    MDLabel:
-        id: path

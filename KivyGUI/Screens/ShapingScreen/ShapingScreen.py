@@ -1,14 +1,20 @@
 ## System Imports
+import datetime
 
 
 ## Application Imports
 from KivyGUI import utils
+from Library.Managers import Shaping
+from Library.Projects.Internal.Base import BaseTarget
+from Library.Shaping.Patch.data import ShapingPatch
 
 
 ## Library Imports
+from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.treeview import TreeView, TreeViewNode, TreeViewLabel
 from kivy.uix.screenmanager import Screen
+from kivy.properties import StringProperty
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.tab import MDTabsBase
 
@@ -19,27 +25,108 @@ class ShapingScreen(Screen):
 	
 	def __init__(self, **kwargs):
 		super().__init__(**kwargs)
+		
+		self.patches_tree_view = None
+		self.target_tree_view = None
 	
 	def on_kv_post(self, base_widget):
-		self.ids.patches_layout.add_widget(PatchesTreeView())
+		self.patches_tree_view = PatchesTreeView(size_hint=[1, None])
+		self.patches_tree_view.bind(minimum_height=self.patches_tree_view.setter('height'))
+		self.ids.patches_layout.add_widget(self.patches_tree_view)
+		
+		self.target_tree_view = TargetTreeView(size_hint=[1, None])
+		self.target_tree_view.bind(minimum_height=self.target_tree_view.setter('height'))
+		self.ids.target_layout.add_widget(self.target_tree_view)
+		
+		self.ids.visitor_layout.add_widget(VisitorController(name='controller'))
 	
+	def open_configuration(self, configuration):
+		Shaping.operation = Shaping.MakeOperation(configuration)
+		
+		self.patches_tree_view.display_patches(Shaping.operation.configuration.shaping_project.patches)
+		self.target_tree_view.display_target(Shaping.operation.target)
+		
+		self.ids.visitor_layout.children[0].update_information()
 	
+
 class Tab(MDFloatLayout, MDTabsBase):
 	pass
 
 
+class VisitorController(BoxLayout):
+	
+	visitor_type = StringProperty('Visitor Type', rebind=True)
+	time_elapsed = StringProperty('Time Elapsed', rebind=True)
+	
+	def __init__(self, **kwargs):
+		super().__init__()
+		
+		Clock.schedule_interval(self.update_frame, 0)
+	
+	def update_frame(self, t):
+		if Shaping.operation:
+			time = datetime.timedelta(seconds=Shaping.operation.stopwatch.elapsed)
+			self.time_elapsed = f'Time Elapsed: {str(time).split(".")[0]}'
+	
+	def update_information(self):
+		self.visitor_type = Shaping.operation.target.Name
+
+
 class PatchesTreeView(TreeView):
 	
-	def __init__(self):
-		super().__init__()
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
 		self.hide_root = True
+	
+	def display_patches(self, patches: list[ShapingPatch]):
+		for node in [i for i in self.iterate_all_nodes()]:
+			self.remove_node(node)
 		
-		n1 = self.add_node(TreeViewLabel(text='Test'))
-		self.add_node(BreakpointNode(), n1)
+		# TODO: Currently loading only cares about one depth layer, it is necessary to recurse for infinite children
+		for patch in patches:
+			patch_node = self.add_node(TreeViewLabel(text=patch.name))
+			
+			if patch.actions.builders:
+				builders_node = self.add_node(TreeViewLabel(text='Builders'), patch_node)
+				
+				for key, val in patch.actions.builders.items():
+					self.add_node(BreakpointNode(key, val), builders_node)
+				
+			if patch.actions.replacements:
+				replacements_node = self.add_node(TreeViewLabel(text='Replacements'), patch_node)
+				
+				for key, val in patch.actions.replacements.items():
+					self.add_node(BreakpointNode(key, val), replacements_node)
 
 
 class BreakpointNode(BoxLayout, TreeViewNode):
 	
-	def __init__(self):
+	def __init__(self, name, action):
+		self.name = name
+		self.action = action
 		super().__init__()
+		
+	def on_kv_post(self, base_widget):
+		self.ids.label.text = self.name
+
+
+class TargetTreeView(TreeView):
+	
+	def __init__(self, **kwargs):
+		super().__init__(**kwargs)
+		self.hide_root = True
+	
+	def display_target(self, target: BaseTarget):
+		for node in [i for i in self.iterate_all_nodes()]:
+			self.remove_node(node)
+		
+		# TODO: Currently loading only cares about one depth layer, migh be necessary to recurse for infinite layers
+		target_node = self.add_node(TreeViewLabel(text=target.Name))
+		
+		for group in target.Groups:
+			group_node = self.add_node(TreeViewLabel(text=group.Name), target_node)
+			
+			for file in group.Files:
+				self.add_node(TreeViewLabel(text=file.Name), group_node)
+		
 	

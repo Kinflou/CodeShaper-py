@@ -5,6 +5,7 @@ from pathlib import Path
 
 
 ## Application Imports
+from Library.Projects.Internal.Base import BaseTarget
 
 
 ## Library Imports
@@ -39,14 +40,19 @@ class RawVCXProject:
 		return modules
 
 
-class RawVCXSolution:
+class RawVCXSolution(BaseTarget):
+	
+	@property
+	def Name(self) -> str:
+		return self.name
 	
 	def __init__(self, path: str):
+		super().__init__()
+		
 		self.path = path
 		
 		self.directory = Path(path).parent
-		self.name: str = 'Solution {}'
-		self.project = self.load_projects()
+		self.projects = self.load_projects()
 	
 	def load_projects(self) -> list:
 		solution_file = Path(self.path).read_text()

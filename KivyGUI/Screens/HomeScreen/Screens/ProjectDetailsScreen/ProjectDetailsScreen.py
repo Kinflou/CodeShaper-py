@@ -44,14 +44,14 @@ class ProjectDetailsScreen(Screen):
 		self.config_name = configuration.name
 		self.project_path = configuration.shape_project
 		self.target_path = configuration.target
-		self.description = """
-		"""
+		self.description = configuration.shaping_project.configuration.description
 		
 	def go_back(self):
 		self.parent.current = 'recent_projects_screen'
 	
 	def open_project(self):
 		App.get_running_app().set_screen('shaping_screen')
+		App.get_running_app().get_screen().open_configuration(self.configuration)
 
 
 class DescriptionRstDocument(RstDocument):

@@ -4,8 +4,7 @@
 ## Application Imports
 from KivyGUI import utils, App
 from Library.Managers import Shaping
-from Library.Shaping.Project.data import ShapingConfiguration
-
+from Library.Shaping.Project.data import ShapingConfiguration, ShapingProject
 
 ## Library Imports
 from kivy.uix.screenmanager import Screen
@@ -29,14 +28,11 @@ class HomeScreen(Screen):
 			self.ids.configurations_layout.add_widget(ConfigurationItem(configuration))
 		
 		for project in Shaping.projects:
-			self.ids.projects_layour.add_widget(ProjectItem(project))
+			self.ids.projects_layout.add_widget(ProjectItem(project))
 	
 	def show_configuration(self, configuration):
 		self.ids.screens.current = 'project_details_screen'
 		self.ids.screens.current_screen.show_configuration(configuration)
-	
-	def show_project(self, project):
-		pass
 
 
 class Tab(FloatLayout, MDTabsBase):
@@ -57,10 +53,13 @@ class ConfigurationItem(ScrollView):
 		App.get_running_app().root.screens[0].show_configuration(self.configuration)
 
 
-class ProjectItem(FloatLayout):
+class ProjectItem(ScrollView):
 	
-	def __init__(self, project):
+	def __init__(self, project: ShapingProject):
 		super().__init__()
 		
 		self.project = project
+		
+		self.ids.name.text = project.configuration.name
+		self.ids.path.text = project.configuration.target
 
