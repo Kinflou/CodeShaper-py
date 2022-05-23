@@ -7,24 +7,26 @@ from dataclasses import dataclass, field
 
 
 ## Library Imports
-from dataclasses_json import config
+import hjson
+from dataclasses_json import config, dataclass_json
 
 
 @dataclass(order=True)
 class ShapingReplacement:
 	
 	location: str
-	reference_location: str
-	reference: str
 	from_: str = field(metadata=config(field_name="from"))
 	to: str
+	flags: str = ''
+	reference_location: str = ''
+	reference: str = ''
 
 
 @dataclass(order=True)
 class ShapingBuilder:
 	
 	location: str
-	build: str
+	build: str = ''
 	reference_location: str = ''
 	match: str = ''
 	actions: Optional['ShapingActions'] = None
@@ -38,6 +40,7 @@ class ShapingActions:
 	replacements: dict[str, ShapingReplacement] = field(default_factory=dict)
 
 	
+@dataclass_json
 @dataclass(order=True)
 class ShapingPatch:
 	
@@ -46,3 +49,7 @@ class ShapingPatch:
 	file: str
 	actions: ShapingActions
 	enabled: bool = False
+	
+	@classmethod
+	def from_hjson(cls, content):
+		return cls.from_dict(hjson.loads(content))

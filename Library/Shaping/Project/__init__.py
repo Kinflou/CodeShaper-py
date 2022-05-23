@@ -6,10 +6,3 @@
 
 ## Library Imports
 
-
-class ShapingProject:
-	
-	def __init__(self):
-		pass
-	
-	

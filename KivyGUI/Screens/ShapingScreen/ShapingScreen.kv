@@ -29,31 +29,38 @@
 
         BoxLayout:
 
-            BoxLayout:
-                canvas.before:
-                    Color:
-                        rgba: .5, .5, .5, 1
-                    Line:
-                        width: 1
-                        rectangle: self.x, self.y, self.width, self.height
-
+            Splitter:
                 size_hint: dp(.4), 1
+                strip_size: '5dp'
+                sizable_from: 'right'
 
-                MDTabs:
-                    tab_bar_height: 25
-                    text_color_active: get_color_from_hex("#ffd700")
-                    underline_color: app.theme_cls.primary_dark
+                BoxLayout:
+                    canvas.before:
+                        Color:
+                            rgba: .5, .5, .5, 1
+                        Line:
+                            width: 1
+                            rectangle: self.x, self.y, self.width, self.height
 
-                    Tab:
-                        title: 'Patches'
-                        icon: 'bandage'
+                    MDTabs:
+                        tab_bar_height: 25
+                        text_color_active: get_color_from_hex("#ffd700")
+                        underline_color: app.theme_cls.primary_dark
 
-                        RelativeLayout:
-                            id: patches_layout
+                        Tab:
+                            title: 'Patches'
+                            icon: 'bandage'
 
-                    Tab:
-                        title: 'Action'
-                        icon: 'gesture-tap'
+                            ScrollView:
+                                id: patches_layout
+
+                        Tab:
+                            title: 'Action'
+                            icon: 'focus-field'
+
+                        Tab:
+                            title: 'Frames'
+                            icon: 'tray-full'
 
             BoxLayout:
                 orientation: 'vertical'
@@ -67,16 +74,30 @@
                         title: 'Visitor'
                         icon: 'family-tree'
 
+                        BoxLayout:
+
+                            Splitter:
+                                strip_size: '10dp'
+                                sizable_from: 'right'
+
+                                TextInput:
+
+                            TextInput:
+
                     Tab:
                         title: 'Project'
                         icon: 'file-tree'
+
+                        ScrollView:
+                            do_scroll_x: False
+                            id: target_layout
 
                     Tab:
                         title: 'Results'
                         icon: 'export'
 
-
-                VisitorController:
+                RelativeLayout:
+                    id: visitor_layout
                     size_hint: 1, dp(.2)
 
         BoxLayout:
@@ -98,7 +119,7 @@
     NavigationBar:
 
 
-<VisitorController@BoxLayout>:
+<VisitorController>:
     canvas.before:
         Color:
             rgba: .5, .5, .5, 1
@@ -135,21 +156,15 @@
 
         MDLabel:
             halign: 'right'
-            text: 'Time Elapsed: HH:MM:SS'
+            text: 'Time Elapsed'
+            text: root.time_elapsed
 
         MDLabel:
             halign: 'right'
-            text: 'Visitor Type'
+            text: root.visitor_type
 
 
 <BreakpointNode>:
-    # canvas:
-    #    Color:
-    #        rgba: 1, 0, 0, 1
-    #    Ellipse:
-    #        pos: self.pos[0] - 5, self.pos[1] + 5
-    #        size: 15, 15
-
     height: max(label.texture_size[1] + dp(10), dp(24))
 
     RoundButton:
@@ -160,5 +175,5 @@
         size_hint: (.9, 1)
         text_size: self.width, None
         padding: 15, 0
-        text: "test"
+        text: "action"
 
