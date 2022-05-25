@@ -1,23 +1,18 @@
-## System Imports
+# Generated from CPP14Parser.g4 by ANTLR 4.10.1
+from antlr4 import *
+if __name__ is not None and "." in __name__:
+    from .CPP14Parser import CPP14Parser
+else:
+    from CPP14Parser import CPP14Parser
 
+# This class defines a complete generic visitor for a parse tree produced by CPP14Parser.
 
-## Application Imports
-from Library.AST.ANtlr.CPP14.Location import CPP14Location
-from Library.AST.ANtlr.CPP14.Generated.CPP14Parser import CPP14Parser
+class CPP14ParserVisitor(ParseTreeVisitor):
 
-
-## Library Imports
-from Library.AST.CustomParseTreeVisitor import CustomParseTreeVisitor
-
-
-class CPP14ParserVisitor(CustomParseTreeVisitor):
-    
-    def visitErrorNode(self, node):
-        pass
-    
     # Visit a parse tree produced by CPP14Parser#translationUnit.
-    def visitTranslationUnit(self, ctx: CPP14Parser.TranslationUnitContext):
-        return ctx, CPP14Location.Module
+    def visitTranslationUnit(self, ctx:CPP14Parser.TranslationUnitContext):
+        return self.visitChildren(ctx)
+
 
     # Visit a parse tree produced by CPP14Parser#primaryExpression.
     def visitPrimaryExpression(self, ctx:CPP14Parser.PrimaryExpressionContext):
@@ -307,16 +302,21 @@ class CPP14ParserVisitor(CustomParseTreeVisitor):
     # Visit a parse tree produced by CPP14Parser#jumpStatement.
     def visitJumpStatement(self, ctx:CPP14Parser.JumpStatementContext):
         return self.visitChildren(ctx)
-    
+
+
+    # Visit a parse tree produced by CPP14Parser#declarationStatement.
     def visitDeclarationStatement(self, ctx:CPP14Parser.DeclarationStatementContext):
-        return ctx, CPP14Location.DeclarationStatement
-    
-    def visitDeclarationseq(self, ctx: CPP14Parser.DeclarationseqContext):
-        return ctx, CPP14Location.Declaration
-    
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CPP14Parser#declarationseq.
+    def visitDeclarationseq(self, ctx:CPP14Parser.DeclarationseqContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by CPP14Parser#declaration.
-    def visitDeclaration(self, ctx: CPP14Parser.DeclarationContext):
-        return ctx, CPP14Location.Declaration
+    def visitDeclaration(self, ctx:CPP14Parser.DeclarationContext):
+        return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by CPP14Parser#blockDeclaration.
@@ -962,6 +962,7 @@ class CPP14ParserVisitor(CustomParseTreeVisitor):
     # Visit a parse tree produced by CPP14Parser#literal.
     def visitLiteral(self, ctx:CPP14Parser.LiteralContext):
         return self.visitChildren(ctx)
+
 
 
 del CPP14Parser

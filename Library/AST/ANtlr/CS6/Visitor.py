@@ -2,11 +2,11 @@
 
 
 ## Application Imports
-from Library.AST.interfaces import ASTVisitorInterface
+from Library.AST.CustomParseTreeVisitor import CustomParseTreeVisitor
 
 
 ## Library Imports
 
 
-class CS6Visitor(ASTVisitorInterface):
+class CS6Visitor(CustomParseTreeVisitor):
 	pass

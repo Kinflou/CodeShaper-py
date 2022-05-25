@@ -1,40 +1,29 @@
 ## System Imports
-from enum import Enum
 
 
 ## Application Imports
+from Library.AST.ANtlr.CPP14.Location import CPP14Location
+from Library.AST.ANtlr.CPP14.Visitor import CPP14ParserVisitor
 from Library.AST.interfaces import ASTSetInterface
-from Library.AST.ANtlr.CPP14.Visitor import CPP14Visitor
-from Library.AST.ANtlr.CPP14.Generated import CPP14Lexer
+from Library.AST.ANtlr.CPP14.Generated.CPP14Parser import CPP14Parser
+from Library.AST.ANtlr.CPP14.Generated.CPP14Lexer import CPP14Lexer
 
 
 ## Library Imports
-
-
-class CPP14Location(Enum):
-
-	Null = 'none'
-	Module = 'module'
-	Include = 'include'
-	ModuleVariable = 'module.variable'
-	ModuleVariableDefinition = 'variable.def'
-	Declaration = 'declaration'
-	DeclarationStatement = 'declaration.statement'
-	Function = 'function'
-	FunctionDefinition = 'function.definition'
-	FunctionBody = 'function.body'
-	FunctionCondition = 'function.condition'
 	
 
 class CPP14ASTSet(ASTSetInterface):
 	
-	Lexer = CPP14Lexer
-	Parser = None  # CPP14Parser
-	Visitor = CPP14Visitor
+	Name = 'CPP14 Antlr4 AST'
+	Alias = 'cpp14'
 	
-	InputStream = None
+	Lexer = CPP14Lexer
+	Parser = CPP14Parser
+	Visitor = CPP14ParserVisitor
+	
 	Location = CPP14Location
 	
-	def get_root_context(self):
-		self.Parser.translationUnit()
-	
+	@staticmethod
+	def get_root_context(parser: CPP14Parser):
+		return parser.translationUnit()
+
