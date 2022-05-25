@@ -901,6 +901,7 @@ def serializedATN():
         0,0,7,196,0
     ]
 
+
 class CSharpLexer(CSharpLexerBase):
 
     atn = ATNDeserializer().deserialize(serializedATN())

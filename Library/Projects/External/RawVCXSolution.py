@@ -43,19 +43,21 @@ class RawVCXProject:
 class RawVCXSolution(BaseTarget):
 	
 	@property
-	def Name(self) -> str:
-		return self.name
+	def Name(self):
+		return f"VCX Solution {self.__name}"
 	
 	def __init__(self, path: str):
 		super().__init__()
 		
-		self.path = path
+		self.path = Path(path)
 		
-		self.directory = Path(path).parent
+		self.__name = self.path.stem
+		
+		self.directory = self.path.parent
 		self.projects = self.load_projects()
 	
 	def load_projects(self) -> list:
-		solution_file = Path(self.path).read_text()
+		solution_file = self.path.read_text()
 		pattern = r"Project\(\"{(.*?)}\"\)\s=\s\"(.*?)\"\s?,\s?\"(.*?)\"\s?,\s?\"{(.*?)}"
 		
 		projects = []

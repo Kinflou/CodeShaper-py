@@ -18,17 +18,17 @@ class ASTSetInterface(ABC):
 
 	@property
 	@abstractmethod
-	def Lexer(self) -> Lexer:
+	def Lexer(self):
 		pass
 	
 	@property
 	@abstractmethod
-	def Parser(self) -> Parser:
+	def Parser(self):
 		pass
 
 	@property
 	@abstractmethod
-	def Visitor(self) -> ASTVisitorInterface:
+	def Visitor(self):
 		pass
 	
 	@property
@@ -36,7 +36,8 @@ class ASTSetInterface(ABC):
 	def Location(self) -> Enum:
 		pass
 	
+	@staticmethod
 	@abstractmethod
-	def get_root_context(self) -> ParserRuleContext:
+	def get_root_context(parser: Parser) -> ParserRuleContext:
 		pass
 	

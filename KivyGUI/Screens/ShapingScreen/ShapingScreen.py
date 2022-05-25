@@ -4,6 +4,7 @@ import datetime
 
 ## Application Imports
 from KivyGUI import utils
+from Library.AST.VisitorController import VisitorState
 from Library.Managers import Shaping
 from Library.Projects.Internal.Base import BaseTarget
 from Library.Shaping.Patch.data import ShapingPatch
@@ -55,21 +56,43 @@ class Tab(MDFloatLayout, MDTabsBase):
 
 class VisitorController(BoxLayout):
 	
-	visitor_type = StringProperty('Visitor Type', rebind=True)
-	time_elapsed = StringProperty('Time Elapsed', rebind=True)
+	visitor_type = StringProperty()
+	time_elapsed = StringProperty()
+	file = StringProperty()
 	
 	def __init__(self, **kwargs):
 		super().__init__()
 		
 		Clock.schedule_interval(self.update_frame, 0)
 	
+	def play(self):
+		Shaping.operation.start()
+		
+		if Shaping.operation.current_file.Controller.state == VisitorState.Visit:
+			self.ids.play.text = 'Play'
+			self.ids.play.icon = 'play'
+		else:
+			self.ids.play.text = 'Pause'
+			self.ids.play.icon = 'pause'
+	
+	def stop(self):
+		Shaping.operation.stop()
+	
 	def update_frame(self, t):
-		if Shaping.operation:
-			time = datetime.timedelta(seconds=Shaping.operation.stopwatch.elapsed)
-			self.time_elapsed = f'Time Elapsed: {str(time).split(".")[0]}'
+		if not Shaping.operation:
+			return
+		
+		if Shaping.operation.stopwatch.elapsed < 1:
+			return
+		
+		time = datetime.timedelta(seconds=Shaping.operation.stopwatch.elapsed)
+		self.time_elapsed = f'Time Elapsed: {str(time).split(".")[0]}'
 	
 	def update_information(self):
 		self.visitor_type = Shaping.operation.target.Name
+		
+		if Shaping.operation.current_file:
+			self.file = Shaping.operation.current_file.Name
 
 
 class PatchesTreeView(TreeView):
@@ -127,6 +150,17 @@ class TargetTreeView(TreeView):
 			group_node = self.add_node(TreeViewLabel(text=group.Name), target_node)
 			
 			for file in group.Files:
-				self.add_node(TreeViewLabel(text=file.Name), group_node)
+				self.add_node(TargetFileNode(file, text=file.Name), group_node)
 		
 	
+class TargetFileNode(TreeViewLabel):
+
+	def __init__(self,  file, **kwargs):
+		self.file = file
+		super().__init__(**kwargs)
+	
+	def select(self, value):
+		if value:
+			self.color = [1, 1, 1, 1]
+		else:
+			self.color = [1, 1, .1, 1]

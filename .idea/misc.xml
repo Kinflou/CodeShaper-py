@@ -32,7 +32,8 @@
           <option name="libDir" value="Library/AST/ANtlr/CPP14/Grammars" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />
-          <option name="language" value="Python2" />
+          <option name="language" value="Python3" />
+          <option name="generateListener" value="false" />
           <option name="generateVisitor" value="true" />
         </PerGrammarGenerationSettings>
         <PerGrammarGenerationSettings>

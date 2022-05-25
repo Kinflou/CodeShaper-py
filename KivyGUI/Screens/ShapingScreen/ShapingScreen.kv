@@ -138,16 +138,19 @@
             padding: 0, 10
 
             MDRectangleFlatIconButton:
+                id: play
                 icon: 'play'
                 text: 'Play'
+                on_release: root.play()
 
             MDRectangleFlatIconButton:
                 icon: 'stop'
                 text: 'Stop'
+                on_release: root.stop()
 
             MDLabel:
                 padding: 10, 0
-                text: 'Current File'
+                text: root.file
 
 
     BoxLayout:

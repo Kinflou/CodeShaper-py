@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 
 
 ## Application Imports
+from Library.AST.VisitorController import VisitorController
 
 
 ## Library Imports
@@ -14,6 +15,11 @@ class BaseFile(ABC):
 	@property
 	@abstractmethod
 	def Name(self):
+		pass
+	
+	@property
+	@abstractmethod
+	def Controller(self) -> VisitorController:
 		pass
 
 
@@ -66,6 +72,9 @@ class BaseTargetFilesMap:
 		
 		for group in group.Groups:
 			self.__make_groups_list(group)
+	
+	def first(self):
+		return self.items[0] if len(self.items) > 0 else None
 	
 	def previous(self, item):
 		index = self.items.index(item)
