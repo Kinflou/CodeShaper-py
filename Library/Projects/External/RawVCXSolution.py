@@ -46,6 +46,10 @@ class RawVCXSolution(BaseTarget):
 	def Name(self):
 		return f"VCX Solution {self.__name}"
 	
+	@property
+	def Groups(self):
+		return None
+	
 	def __init__(self, path: str):
 		super().__init__()
 		

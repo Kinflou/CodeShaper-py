@@ -3,10 +3,12 @@ import datetime
 
 
 ## Application Imports
+from kivy.utils import get_color_from_hex
+
 from KivyGUI import utils
 from Library.AST.VisitorController import VisitorState
 from Library.Managers import Shaping
-from Library.Projects.Internal.Base import BaseTarget
+from Library.Projects.Internal.Base import BaseTarget, BaseFile, FileState
 from Library.Shaping.Patch.data import ShapingPatch
 
 
@@ -67,16 +69,22 @@ class VisitorController(BoxLayout):
 	
 	def play(self):
 		Shaping.operation.start()
+	
+	@staticmethod
+	def stop():
+		Shaping.operation.stop()
+	
+	def on_state(self):
+		state = Shaping.operation.current_file.VisitorState
 		
-		if Shaping.operation.current_file.Controller.state == VisitorState.Visit:
+		if state == VisitorState.Visit or state == VisitorState.Ready or state == VisitorState.Stopped:
 			self.ids.play.text = 'Play'
 			self.ids.play.icon = 'play'
 		else:
 			self.ids.play.text = 'Pause'
 			self.ids.play.icon = 'pause'
-	
-	def stop(self):
-		Shaping.operation.stop()
+		
+		self.file = f'{Shaping.operation.current_file.parent.Name} {Shaping.operation.current_file.Name}'
 	
 	def update_frame(self, t):
 		if not Shaping.operation:
@@ -93,6 +101,8 @@ class VisitorController(BoxLayout):
 		
 		if Shaping.operation.current_file:
 			self.file = Shaping.operation.current_file.Name
+		
+		Shaping.operation.on_state += self.on_state
 
 
 class PatchesTreeView(TreeView):
@@ -143,7 +153,7 @@ class TargetTreeView(TreeView):
 		for node in [i for i in self.iterate_all_nodes()]:
 			self.remove_node(node)
 		
-		# TODO: Currently loading only cares about one depth layer, migh be necessary to recurse for infinite layers
+		# TODO: Currently loading only cares about one depth layer, migh be necessary to recurse for hierarchical layers
 		target_node = self.add_node(TreeViewLabel(text=target.Name))
 		
 		for group in target.Groups:
@@ -154,9 +164,12 @@ class TargetTreeView(TreeView):
 		
 	
 class TargetFileNode(TreeViewLabel):
-
-	def __init__(self,  file, **kwargs):
+	
+	def __init__(self,  file: BaseFile, **kwargs):
 		self.file = file
+		file.on_state += self.on_state
+		self.on_state(file.State)
+		
 		super().__init__(**kwargs)
 	
 	def select(self, value):
@@ -164,3 +177,15 @@ class TargetFileNode(TreeViewLabel):
 			self.color = [1, 1, 1, 1]
 		else:
 			self.color = [1, 1, .1, 1]
+	
+	def on_state(self, state):
+		colors = {
+			FileState.Untouched: get_color_from_hex('ffff00'),
+			FileState.Waiting: get_color_from_hex('048fe0'),
+			FileState.Processing: get_color_from_hex('bd2af7'),
+			FileState.Processed: get_color_from_hex('02d34e'),
+			FileState.Error: get_color_from_hex('c10303')
+		}
+		
+		self.color = colors[state]
+		

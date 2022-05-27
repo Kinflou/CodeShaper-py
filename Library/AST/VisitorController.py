@@ -1,11 +1,12 @@
 ## System Imports
 import logging
+import time
 from enum import IntEnum
 from threading import Thread
 
 
 ## Application Imports
-from Library.AST.ANtlr.CPP14.Visitor import CPP14ParserVisitor
+from Library.AST.CustomParseTreeVisitor import CustomParseTreeVisitor
 from Library.AST.interfaces import ASTSetInterface
 
 
@@ -25,16 +26,19 @@ class VisitorState(IntEnum):
 
 class VisitorController(Events):
 	
-	__events__ = ['on_visit', 'on_state_change']
+	__events__ = ['on_visit', 'on_state', 'on_finish']
 	
 	@property
-	def state(self) -> VisitorState:
+	def State(self) -> VisitorState:
 		return self.__state
 	
-	@state.setter
-	def state(self, value):
+	@State.setter
+	def State(self, value):
+		if self.__state == value:
+			return
+		
 		self.__state = value
-		self.on_state_change(self.__state)
+		self.on_state(self.__state)
 		Thread(name='Visitor Controller', target=self.process).start()
 	
 	def __init__(self, ast_set: ASTSetInterface, content: str):
@@ -55,15 +59,18 @@ class VisitorController(Events):
 		self.__processing = False
 		
 		self.__is_setup = False
-		
+	
 	def __setup(self):
 		self.__input_stream = InputStream(self.__content)
 		lexer = self.__ast_set.Lexer(self.__input_stream)
 		stream = CommonTokenStream(lexer)
 		parser = self.__ast_set.Parser(stream)
 		
+		t = time.perf_counter()
 		tree = self.__ast_set.get_root_context(parser)
-		self.visitor: CPP14ParserVisitor = self.__ast_set.Visitor()
+		tt = time.perf_counter() - t
+		
+		self.visitor: CustomParseTreeVisitor = self.__ast_set.Visitor()
 		
 		context, location = self.visitor.visit(tree)
 		content = self.__input_stream.getText(0, self.__input_stream.size)
@@ -115,6 +122,10 @@ class VisitorController(Events):
 		context = self.contexts[:1]
 		previous_context = self.contexts[:0]
 		
+		# TODO: Perhaps this can be threaded since all the necessary resources are tracked
+		#       (contexts, locations, contents)
+		self.on_visit(self)
+		
 		if context == previous_context:
 			logging.info('Reached the end of visits')
 			self.__state = VisitorState.Finished
@@ -124,4 +135,5 @@ class VisitorController(Events):
 		logging.info('Finished Visiting')
 		self.__state = VisitorState.Finished
 		self.__processing = False
+		self.on_finish()
 

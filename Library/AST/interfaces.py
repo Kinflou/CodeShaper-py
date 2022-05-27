@@ -7,12 +7,8 @@ from abc import ABC, abstractmethod
 
 
 ## Library Imports
-from antlr4 import Lexer, Parser, ParserRuleContext
+from antlr4 import ParserRuleContext
 
-
-class ASTVisitorInterface(ABC):
-	pass
-	
 
 class ASTSetInterface(ABC):
 
