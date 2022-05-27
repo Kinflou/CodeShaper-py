@@ -17367,7 +17367,7 @@ class CPP14Parser ( Parser ):
 
 
     def sempred(self, localctx:RuleContext, ruleIndex:int, predIndex:int):
-        if self._predicates == None:
+        if self._predicates is None:
             self._predicates = dict()
         self._predicates[5] = self.nestedNameSpecifier_sempred
         self._predicates[15] = self.postfixExpression_sempred

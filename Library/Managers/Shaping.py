@@ -6,7 +6,6 @@ from pathlib import Path
 ## Application Imports
 from Library import Constants
 from Library.Shaping.Operation import ShapingOperation
-from Library.Projects.Internal.Types.VCXSolution import VCXSolution
 from Library.Shaping.Project.data import ShapingConfiguration, ShapingProject
 
 
@@ -45,8 +44,5 @@ def Initialize():
 def MakeOperation(configuration: ShapingConfiguration) -> ShapingOperation:
 	configuration.shaping_project.load_full()
 	
-	# TODO: Do proper dynamic loading of targets, as this is temporary
-	target = VCXSolution(configuration.source)
-	
-	return ShapingOperation(configuration, target)
+	return ShapingOperation(configuration)
 

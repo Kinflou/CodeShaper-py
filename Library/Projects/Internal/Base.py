@@ -1,16 +1,29 @@
 ## System Imports
+import re
 from abc import ABC, abstractmethod
+from enum import IntEnum
 
 
 ## Application Imports
-from Library.AST.VisitorController import VisitorController
+from Library.AST.VisitorController import VisitorController, VisitorState
 
 
 ## Library Imports
 from events import Events
 
 
-class BaseFile(ABC):
+class FileState(IntEnum):
+	
+	Untouched = 0
+	Waiting = 1
+	Processing = 2
+	Processed = 3
+	Error = 4
+
+
+class BaseFile(Events, ABC):
+	
+	__events__ = ('on_state', )
 	
 	@property
 	@abstractmethod
@@ -21,7 +34,31 @@ class BaseFile(ABC):
 	@abstractmethod
 	def Controller(self) -> VisitorController:
 		pass
-
+	
+	@property
+	@abstractmethod
+	def State(self) -> FileState:
+		pass
+	
+	@property
+	@abstractmethod
+	def VisitorState(self) -> VisitorState:
+		pass
+	
+	@VisitorState.setter
+	@abstractmethod
+	def VisitorState(self, value: VisitorState):
+		pass
+	
+	def find_matching_patches(self, filename):
+		matching = []
+		
+		for patch in self.root.shaping_project.patches:
+			if re.match(patch.file, filename):
+				matching.append(patch)
+		
+		return matching
+		
 
 class BaseGroup(Events, ABC):
 	

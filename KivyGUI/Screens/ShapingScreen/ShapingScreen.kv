@@ -88,9 +88,83 @@
                         title: 'Project'
                         icon: 'file-tree'
 
-                        ScrollView:
-                            do_scroll_x: False
-                            id: target_layout
+                        BoxLayout:
+                            orientation: 'vertical'
+
+                            ScrollView:
+                                do_scroll_x: False
+                                id: target_layout
+
+                            BoxLayout:
+                                canvas.before:
+                                    Color:
+                                        rgba: .5, .5, .5, 1
+                                    Line:
+                                        width: 1
+                                        rectangle: self.x, self.y, self.width, self.height
+
+                                size_hint: 1, dp(.1)
+
+                                MDLabel:
+                                    canvas:
+                                        Color:
+                                            rgba: get_color_from_hex('ffff00')
+                                        Ellipse:
+                                            pos: self.pos[0] + 25, self.pos[1] + 12
+                                            size: 15, 15
+
+                                    padding: 22, 0
+                                    halign: 'center'
+                                    text: 'Untouched'
+
+                                MDLabel:
+                                    canvas:
+                                        Color:
+                                            rgba: get_color_from_hex('048fe0')
+                                        Ellipse:
+                                            pos: self.pos[0] + 28, self.pos[1] + 12
+                                            size: 15, 15
+
+                                    padding: 22, 0
+                                    halign: 'center'
+                                    text: 'Waiting'
+
+                                MDLabel:
+                                    canvas:
+                                        Color:
+                                            rgba: get_color_from_hex('8403b7')
+                                        Ellipse:
+                                            pos: self.pos[0] + 23, self.pos[1] + 12
+                                            size: 15, 15
+
+                                    padding: 22, 0
+                                    halign: 'center'
+                                    text: 'Processing'
+
+                                MDLabel:
+                                    canvas:
+                                        Color:
+                                            rgba: get_color_from_hex('02d34e')
+                                        Ellipse:
+                                            pos: self.pos[0] + 25, self.pos[1] + 12
+                                            size: 15, 15
+
+                                    padding: 22, 0
+                                    halign: 'center'
+                                    text: 'Finished'
+
+                                MDLabel:
+                                    canvas:
+                                        Color:
+                                            rgba: get_color_from_hex('c10303')
+                                        Ellipse:
+                                            pos: self.pos[0] - 10, self.pos[1] + 12
+                                            size: 15, 15
+
+                                    size_hint: dp(.4), 1
+                                    padding: 22, 0
+                                    halign: 'center'
+                                    text: 'Error'
 
                     Tab:
                         title: 'Results'
@@ -148,8 +222,9 @@
                 text: 'Stop'
                 on_release: root.stop()
 
+
             MDLabel:
-                padding: 10, 0
+                padding: 10, 10
                 text: root.file
 
 

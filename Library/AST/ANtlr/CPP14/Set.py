@@ -10,7 +10,7 @@ from Library.AST.ANtlr.CPP14.Generated.CPP14Lexer import CPP14Lexer
 
 
 ## Library Imports
-	
+
 
 class CPP14ASTSet(ASTSetInterface):
 	

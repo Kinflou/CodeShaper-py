@@ -5,7 +5,6 @@ from dataclasses import dataclass
 
 
 ## Application Imports
-from Library.Projects.Internal.Types.VCXSolution import VCXSolution
 from Library.Shaping.Patch.data import ShapingPatch
 
 

@@ -26,7 +26,8 @@ class CustomParseTreeVisitor(ParseTreeVisitor):
 	def aggregateResult(self, aggregate, nextResult):
 		return aggregate if nextResult is None else nextResult
 	
-	def context_text(self, input_stream: InputStream, ctx: ParserRuleContext):
+	@staticmethod
+	def context_text(input_stream: InputStream, ctx: ParserRuleContext):
 		start = ctx.start.start
 		stop = ctx.stop.stop if ctx.stop is not None else ctx.start.stop
 		

@@ -5,6 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/KivyGUI/__TESTS__" />
       <excludeFolder url="file://$MODULE_DIR$/KivyGUI/Assets" />
       <excludeFolder url="file://$MODULE_DIR$/Library/AST/ANtlr/CS6/Generated" />
+      <excludeFolder url="file://$MODULE_DIR$/Library/AST/ANtlr/CPP14/Generated" />
     </content>
     <orderEntry type="jdk" jdkName="Pipenv (CodeShaperPy)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

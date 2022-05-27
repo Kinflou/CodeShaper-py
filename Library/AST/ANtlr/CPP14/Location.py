@@ -7,8 +7,8 @@ from enum import Enum
 
 ## Library Imports
 
-
 class CPP14Location(Enum):
+	
 	Null = 'none'
 	Module = 'module'
 	Include = 'include'
@@ -20,3 +20,4 @@ class CPP14Location(Enum):
 	FunctionDefinition = 'function.definition'
 	FunctionBody = 'function.body'
 	FunctionCondition = 'function.condition'
+	TEMP = 'temp'  # Pycharm warning for duplicates, remove this member when necessary

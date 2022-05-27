@@ -5,7 +5,7 @@
 
 
 ## Pre Library Operations
-ico = r'Assets/logo/logo_only.ico'
+ico = r'Assets/logo/logo_only_black.ico'
 
 from kivy.config import Config
 
