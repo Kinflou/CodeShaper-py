@@ -24,19 +24,19 @@ def Initialize():
 	for configuration in glob(f'{Constants.configurations_directory}/*.hjson'):
 		shaping_configuration: ShapingConfiguration = ShapingConfiguration.from_hjson(Path(configuration).read_text())
 		
-		project: ShapingProject | None = None
-		path = Path(shaping_configuration.shape_project)
+		shaping_project: ShapingProject | None = None
+		path = Path(shaping_configuration.project)
 		
 		if path.exists():
 			for project in projects:
-				if project.configuration.target == path:
-					project = project
+				if project.directory == path:
+					shaping_project = project
 			
-			if not project:
-				project = ShapingProject(str(path))
-				projects.append(project)
+			if not shaping_project:
+				shaping_project = ShapingProject(str(path))
+				projects.append(shaping_project)
 		
-		shaping_configuration.shaping_project = project
+		shaping_configuration.shaping_project = shaping_project
 		
 		configurations.append(shaping_configuration)
 

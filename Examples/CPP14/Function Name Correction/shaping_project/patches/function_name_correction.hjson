@@ -1,0 +1,14 @@
+{
+    "alias": cpp14
+    "file": Module.*
+    "actions": {
+        "replacements": {
+			"method_definition_replacement": {
+                "location": method.def
+                "reference_location": method.def
+                "from": void\s*?__(.*?)
+                "to": void\s*?_($0)
+            }
+        }
+    }
+}

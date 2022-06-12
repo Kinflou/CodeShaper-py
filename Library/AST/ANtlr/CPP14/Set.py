@@ -2,9 +2,9 @@
 
 
 ## Application Imports
+from Library.AST.interfaces import ASTSetInterface
 from Library.AST.ANtlr.CPP14.Location import CPP14Location
 from Library.AST.ANtlr.CPP14.Visitor import CPP14ParserVisitor
-from Library.AST.interfaces import ASTSetInterface
 from Library.AST.ANtlr.CPP14.Generated.CPP14Parser import CPP14Parser
 from Library.AST.ANtlr.CPP14.Generated.CPP14Lexer import CPP14Lexer
 

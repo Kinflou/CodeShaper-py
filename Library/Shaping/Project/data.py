@@ -1,7 +1,7 @@
 ## System Imports
 from glob import glob
 from pathlib import Path
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 ## Application Imports
@@ -18,11 +18,11 @@ from dataclasses_json import dataclass_json
 class ShapingConfiguration:
 
 	name: str
-	shape_project: str
-	source: str
+	project: str
 	target: str
-	backup: str
 	result: str
+	result_option: str = field(default_factory=str)
+	backup: str = field(default_factory=str)
 	
 	@classmethod
 	def from_hjson(cls, content):
@@ -34,9 +34,10 @@ class ShapingConfiguration:
 class ProjectConfiguration:
 
 	name: str
-	projects: dict[str, str]
 	target: str
 	description: str
+	projects: dict[str, str] = field(default_factory=dict)
+	ast_set: str = ''
 	
 	@classmethod
 	def from_hjson(cls, content):
@@ -58,7 +59,7 @@ class ShapingProject:
 		self.__load_patches()
 	
 	def __load_patches(self):
-		for file in glob(f'{self.directory}/projects/**/*.hjson', recursive=True):
+		for file in glob(f'{self.directory}/patches/**/*.hjson', recursive=True):
 			path = Path(file)
 			
 			patch = ShapingPatch.from_hjson(path.read_text())

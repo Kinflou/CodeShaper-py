@@ -1,0 +1,32 @@
+## System Imports
+
+
+## Application Imports
+
+
+## Library Imports
+
+
+<ContextMenuCheckbox>:
+    label: _label
+    width: self.parent.width if self.parent else 0
+    height: dp(26)
+    font_size: '15sp'
+
+    BoxLayout:
+
+        CheckBox:
+            id: _checkbox
+            size_hint: dp(.2), 1
+
+        Label:
+            id: _label
+            pos: 20, 0
+            text: root.text
+            color: root.color
+            font_size: root.font_size
+            padding: dp(10), 0
+            halign: 'left'
+            valign: 'middle'
+            size: self.texture_size
+            size_hint: None, 1

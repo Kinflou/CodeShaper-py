@@ -2,7 +2,7 @@
 
 
 ## Application Imports
-from Library.Projects.Internal.Base import BaseFile
+from Library.Projects.Internal.interfaces import BaseFileInterface
 from Library.Shaping.Operation.Actions.Builder import ActionBuilder
 from Library.Shaping.Patch.data import ShapingPatch
 
@@ -12,7 +12,7 @@ from Library.Shaping.Patch.data import ShapingPatch
 
 class PatchController:
 	
-	def __init__(self, patch: ShapingPatch, file: BaseFile):
+	def __init__(self, patch: ShapingPatch, file: BaseFileInterface):
 		self.__patch = patch
 		self.__file = file
 		

@@ -1,8 +1,8 @@
 {
   "name": "Function Name Correction"
 
-  "target": VCX
-  "patch": cpp14
+  "target": text
+  "ast_set": cpp14
 
   "description":
   '''

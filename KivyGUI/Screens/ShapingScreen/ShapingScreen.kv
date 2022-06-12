@@ -81,8 +81,10 @@
                                 sizable_from: 'right'
 
                                 TextInput:
+                                    id: process_file
 
                             TextInput:
+                                id: original_file
 
                     Tab:
                         title: 'Project'
@@ -184,11 +186,16 @@
 
             size_hint: 1, dp(.2)
 
-            MDTextFieldRect:
-                id: logs
-                disabled: True
-                background_color: app.theme_cls.primary_color
-                text: 'Logs'
+            ScrollView:
+                id: logs_scroll
+
+                TextInput:
+                    id: logs
+                    size_hint: 1, None
+                    height: max(self.minimum_height, logs_scroll.height)
+                    disabled: True
+                    background_color: app.theme_cls.primary_color
+                    disabled_foreground_color: app.theme_cls.secondary_text_color
 
     NavigationBar:
 

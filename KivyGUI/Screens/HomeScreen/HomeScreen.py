@@ -6,6 +6,7 @@ from KivyGUI import utils, App
 from Library.Managers import Shaping
 from Library.Shaping.Project.data import ShapingConfiguration, ShapingProject
 
+
 ## Library Imports
 from kivy.uix.screenmanager import Screen
 from kivy.uix.floatlayout import FloatLayout

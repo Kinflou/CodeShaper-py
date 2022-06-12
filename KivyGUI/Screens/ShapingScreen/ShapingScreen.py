@@ -1,25 +1,26 @@
 ## System Imports
 import datetime
+import logging
 
 
 ## Application Imports
-from kivy.utils import get_color_from_hex
-
 from KivyGUI import utils
 from Library.AST.VisitorController import VisitorState
 from Library.Managers import Shaping
-from Library.Projects.Internal.Base import BaseTarget, BaseFile, FileState
+from Library.Projects.Internal.Base import BaseTarget, FileState
+from Library.Projects.Internal.interfaces import BaseFileInterface
 from Library.Shaping.Patch.data import ShapingPatch
 
 
 ## Library Imports
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.treeview import TreeView, TreeViewNode, TreeViewLabel
 from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty
-from kivymd.uix.floatlayout import MDFloatLayout
+from kivy.utils import get_color_from_hex
+from kivy.uix.treeview import TreeView, TreeViewNode, TreeViewLabel
 from kivymd.uix.tab import MDTabsBase
+from kivymd.uix.floatlayout import MDFloatLayout
 
 
 class ShapingScreen(Screen):
@@ -31,6 +32,13 @@ class ShapingScreen(Screen):
 		
 		self.patches_tree_view = None
 		self.target_tree_view = None
+		
+		self.logs = ''
+		self.process_file = ''
+		
+		logging.getLogger('applog').handlers[0].events.on_emit += self.on_log_emit
+		
+		Clock.schedule_interval(self.update_information, 0)
 	
 	def on_kv_post(self, base_widget):
 		self.patches_tree_view = PatchesTreeView(size_hint=[1, None])
@@ -50,7 +58,23 @@ class ShapingScreen(Screen):
 		self.target_tree_view.display_target(Shaping.operation.target)
 		
 		self.ids.visitor_layout.children[0].update_information()
+		
+		logging.getLogger('applog').info(f'Opened {Shaping.operation.configuration.name}')
+		
+		Shaping.operation.on_update += self.update
+		
+	def on_log_emit(self, log):
+		self.logs += log
 	
+	def update_information(self, t):
+		self.ids.logs.text = self.logs
+		
+		if self.ids.process_file.text != self.process_file:
+			self.ids.process_file.text = Shaping.operation.current_file.content
+	
+	def update(self):
+		self.process_file = Shaping.operation.current_file.content
+
 
 class Tab(MDFloatLayout, MDTabsBase):
 	pass
@@ -67,7 +91,8 @@ class VisitorController(BoxLayout):
 		
 		Clock.schedule_interval(self.update_frame, 0)
 	
-	def play(self):
+	@staticmethod
+	def play():
 		Shaping.operation.start()
 	
 	@staticmethod
@@ -84,7 +109,7 @@ class VisitorController(BoxLayout):
 			self.ids.play.text = 'Pause'
 			self.ids.play.icon = 'pause'
 		
-		self.file = f'{Shaping.operation.current_file.parent.Name} {Shaping.operation.current_file.Name}'
+		self.file = f'{Shaping.operation.current_file.Name}'
 	
 	def update_frame(self, t):
 		if not Shaping.operation:
@@ -97,7 +122,7 @@ class VisitorController(BoxLayout):
 		self.time_elapsed = f'Time Elapsed: {str(time).split(".")[0]}'
 	
 	def update_information(self):
-		self.visitor_type = Shaping.operation.target.Name
+		self.visitor_type = Shaping.operation.target.ASTSet.Name
 		
 		if Shaping.operation.current_file:
 			self.file = Shaping.operation.current_file.Name
@@ -162,10 +187,13 @@ class TargetTreeView(TreeView):
 			for file in group.Files:
 				self.add_node(TargetFileNode(file, text=file.Name), group_node)
 		
+		for file in target.Files:
+			self.add_node(TargetFileNode(file, text=file.Name), target_node)
+		
 	
 class TargetFileNode(TreeViewLabel):
 	
-	def __init__(self,  file: BaseFile, **kwargs):
+	def __init__(self,  file: BaseFileInterface, **kwargs):
 		self.file = file
 		file.on_state += self.on_state
 		self.on_state(file.State)
