@@ -2,6 +2,7 @@
 
 
 ## Application Imports
+#: import ContextMenuCheckbox Widgets.ContextMenu.ContextMenuCheckbox
 
 
 ## Library Imports
@@ -48,6 +49,21 @@
                         ContextMenuTextItem:
                             text: "Redo"
 
+        AppMenuTextItem:
+            text: "Settings"
+            ContextMenu:
+                ContextMenuTextItem:
+                    text: 'Visitor'
+                    ContextMenu:
+                        ContextMenuCheckbox:
+                            text: 'Pause on visit'
+                ContextMenuTextItem:
+                    text: 'Actions'
+                    ContextMenu:
+                        ContextMenuCheckbox:
+                            text: 'Pause on action'
+                        ContextMenuCheckbox:
+                            text: 'Pause on expression'
 
         AppMenuTextItem:
             text: "About"

@@ -1,11 +1,9 @@
 ## System Imports
 import re
-import uuid
 from pathlib import Path
 
 
 ## Application Imports
-from Library.Projects.Internal.Base import BaseTarget
 
 
 ## Library Imports
@@ -39,40 +37,3 @@ class RawVCXProject:
 		
 		return modules
 
-
-class RawVCXSolution(BaseTarget):
-	
-	@property
-	def Name(self):
-		return f"VCX Solution {self.__name}"
-	
-	@property
-	def Groups(self):
-		return None
-	
-	def __init__(self, path: str):
-		super().__init__()
-		
-		self.path = Path(path)
-		
-		self.__name = self.path.stem
-		
-		self.directory = self.path.parent
-		self.projects = self.load_projects()
-	
-	def load_projects(self) -> list:
-		solution_file = self.path.read_text()
-		pattern = r"Project\(\"{(.*?)}\"\)\s=\s\"(.*?)\"\s?,\s?\"(.*?)\"\s?,\s?\"{(.*?)}"
-		
-		projects = []
-		for project in re.findall(pattern, solution_file):
-			
-			guid = uuid.UUID(project[0])
-			name = project[1]
-			directory = f"{self.directory}/{project[2]}"
-			other_guid = uuid.UUID(project[3])
-			
-			projects.append(RawVCXProject(name, directory, guid, other_guid))
-		
-		return projects
-	

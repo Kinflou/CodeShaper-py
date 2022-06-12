@@ -11,7 +11,12 @@ from antlr4 import ParserRuleContext
 
 
 class ASTSetInterface(ABC):
-
+	
+	@property
+	@abstractmethod
+	def Alias(self) -> str:
+		pass
+	
 	@property
 	@abstractmethod
 	def Lexer(self):

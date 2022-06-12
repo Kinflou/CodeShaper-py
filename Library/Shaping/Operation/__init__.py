@@ -1,12 +1,12 @@
 ## System Imports
+import logging
 
 
 ## Application Imports
+from Library.Projects import Types
 from Library.AST.VisitorController import VisitorState
-from Library.Projects.Internal.Base import BaseTarget, BaseFile, BaseTargetFilesMap
-from Library.Projects.Internal.Types.VCXSolution import VCXSolution
-from Library.Shaping.Operation.Actions.Frames import ActionFrames
 from Library.Shaping.Project.data import ShapingConfiguration
+from Library.Projects.Internal.Base import BaseTarget, BaseFile, BaseTargetFilesMap
 
 
 ## Library Imports
@@ -16,7 +16,11 @@ from stopwatch import Stopwatch
 
 class ShapingOperation(Events):
 	
-	__events__ = ('on_state', )
+	__events__ = ('on_state', 'on_update')
+	
+	@property
+	def ShapingProject(self):
+		return self.configuration.shaping_project
 	
 	def __init__(self, configuration):
 		super().__init__()
@@ -32,8 +36,13 @@ class ShapingOperation(Events):
 		self.__setup()
 	
 	def __setup(self):
-		# TODO: Do proper dynamic loading of targets, as this is temporary
-		self.target = VCXSolution(self.configuration.source, self, self.configuration.shaping_project)
+		target = self.configuration.shaping_project.configuration.target
+		found_type = Types.find_type(target)
+		
+		if not found_type:
+			raise ModuleNotFoundError(f'No target type found with the alias {target}')
+		
+		self.target = found_type(self.configuration.target, self)
 		self.files_map = BaseTargetFilesMap(self.target)
 	
 	def start(self):
@@ -62,6 +71,16 @@ class ShapingOperation(Events):
 	
 	def next(self):
 		self.current_file = self.files_map.next(self.current_file)
+		
+		if not self.current_file:
+			logging.getLogger('applog').info('Finished target shaping')
+			self.finalize()
+			return
+		
 		self.start()
-
-
+	
+	def update(self):
+		self.on_update()
+	
+	def finalize(self):
+		pass

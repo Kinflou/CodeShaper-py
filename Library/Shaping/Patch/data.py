@@ -45,9 +45,9 @@ class ShapingActions:
 class ShapingPatch:
 	
 	alias: str
-	project: str
 	file: str
 	actions: ShapingActions
+	project: str = ''  # TODO: Do matching of patches that only affect certain groups, and rename this field to groups
 	enabled: bool = False
 	
 	@classmethod

@@ -42,7 +42,7 @@ class ProjectDetailsScreen(Screen):
 		self.configuration = configuration
 		
 		self.config_name = configuration.name
-		self.project_path = configuration.shape_project
+		self.project_path = configuration.project
 		self.target_path = configuration.target
 		self.description = configuration.shaping_project.configuration.description
 		

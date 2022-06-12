@@ -1,47 +1,37 @@
 ## System Imports
 import logging
-import collections
+from logging import Handler
 
 
 ## Application Imports
 
 
 ## Library Imports
+from events import Events
 
-class TailLogHandler(logging.Handler):
 
-    def __init__(self, log_queue):
-        logging.Handler.__init__(self)
-        self.log_queue = log_queue
+class TailLogHandlerEvents(Events):
+    
+    __events__ = ('on_emit',)
+
+
+class TailLogHandler(Handler):
+    
+    def __init__(self):
+        super().__init__()
+        
+        self.events = TailLogHandlerEvents()
 
     def emit(self, record):
-        self.log_queue.append(self.format(record))
-
-
-class TailLogger(object):
-
-    def __init__(self, maxlen):
-        self._log_queue = collections.deque(maxlen=maxlen)
-        self._log_handler = TailLogHandler(self._log_queue)
-
-    def contents(self):
-        return '\n'.join(self._log_queue)
-
-    @property
-    def log_handler(self):
-        return self._log_handler
+        self.events.on_emit(self.format(record))
 
 
 def Initialize():
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('applog')
     
-    tail = TailLogger(10)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s\n')
     
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    
-    log_handler = tail.log_handler
+    log_handler = TailLogHandler()
     log_handler.setFormatter(formatter)
     logger.addHandler(log_handler)
-    
     logger.setLevel(logging.DEBUG)
-

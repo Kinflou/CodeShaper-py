@@ -97,7 +97,7 @@ class VisitorController(Events):
 			context = self.contexts[self.__index]
 			location = self.locations[self.__index]
 			
-			logging.info(f'Visiting {location.name}')
+			logging.getLogger('applog').info(f'Visiting {location.name}')
 			result = self.visitor.visitChildren(context)
 			
 			if not result:
@@ -119,20 +119,18 @@ class VisitorController(Events):
 			self.__post_process()
 	
 	def __post_process(self):
-		context = self.contexts[:1]
-		previous_context = self.contexts[:0]
+		context = self.contexts[-1]
+		previous_context = self.contexts[-2]
 		
-		# TODO: Perhaps this can be threaded since all the necessary resources are tracked
-		#       (contexts, locations, contents)
 		self.on_visit(self)
 		
 		if context == previous_context:
-			logging.info('Reached the end of visits')
+			logging.getLogger('applog').info('Reached the end of visits')
 			self.__state = VisitorState.Finished
 			self.__processing = False
 	
 	def __finish_process(self):
-		logging.info('Finished Visiting')
+		logging.getLogger('applog').info('Finished Visiting')
 		self.__state = VisitorState.Finished
 		self.__processing = False
 		self.on_finish()
