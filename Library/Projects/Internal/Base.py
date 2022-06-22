@@ -1,12 +1,13 @@
 ## System Imports
 import os
 import re
+from abc import ABC
 from pathlib import Path
 
 
 ## Application Imports
 from Library.AST import ANtlr
-from Library.Shaping.Patch import PatchController
+from Library.Shaping.Patch.controller import PatchController
 from Library.AST.VisitorController import VisitorController, VisitorState
 from Library.Projects.Internal.interfaces import BaseFileInterface, BaseTargetInterface, BaseGroupInterface, FileState
 
@@ -131,7 +132,7 @@ class BaseGroup(Events, BaseGroupInterface):
 		self._parent = parent
 	
 
-class BaseTarget(Events, BaseTargetInterface):
+class BaseTarget(Events, BaseTargetInterface, ABC):
 	
 	__events__ = ('on_shaping_group_load', 'on_shaping_target_load')
 	

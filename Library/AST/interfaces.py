@@ -1,5 +1,4 @@
 ## System Imports
-from enum import Enum
 from abc import ABC, abstractmethod
 
 
@@ -11,6 +10,11 @@ from antlr4 import ParserRuleContext
 
 
 class ASTSetInterface(ABC):
+	
+	@property
+	@abstractmethod
+	def Name(self) -> str:
+		pass
 	
 	@property
 	@abstractmethod
@@ -30,11 +34,6 @@ class ASTSetInterface(ABC):
 	@property
 	@abstractmethod
 	def Visitor(self):
-		pass
-	
-	@property
-	@abstractmethod
-	def Location(self) -> Enum:
 		pass
 	
 	@staticmethod

@@ -1,0 +1,58 @@
+## System Imports
+
+
+## Application Imports
+
+
+## Library Imports
+
+
+
+<VisitorController>:
+    canvas.before:
+        Color:
+            rgba: .5, .5, .5, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 0
+
+        MDLabel:
+            text: 'Ready to start visiting'
+
+        BoxLayout:
+            padding: 0, 10
+
+            MDRectangleFlatIconButton:
+                id: play
+                icon: 'play'
+                text: 'Play'
+                on_release: root.play()
+
+            MDRectangleFlatIconButton:
+                icon: 'stop'
+                text: 'Stop'
+                on_release: root.stop()
+
+
+            MDLabel:
+                padding: 10, 10
+                text: root.file
+
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10, 0
+
+        MDLabel:
+            halign: 'right'
+            text: 'Time Elapsed'
+            text: root.time_elapsed
+
+        MDLabel:
+            halign: 'right'
+            text: root.visitor_type
+
