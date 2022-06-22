@@ -12,6 +12,8 @@ dataclasses-json = "*"
 hjson = "*"
 antlr4-python3-runtime = "*"
 python-stopwatch2 = "*"
+regex = "*"
+deprecation = "*"
 
 [dev-packages]
 

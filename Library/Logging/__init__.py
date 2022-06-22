@@ -35,3 +35,6 @@ def Initialize():
     log_handler.setFormatter(formatter)
     logger.addHandler(log_handler)
     logger.setLevel(logging.DEBUG)
+
+
+# TODO: Implement proper logging and actually use it, most of the code above is a sketch

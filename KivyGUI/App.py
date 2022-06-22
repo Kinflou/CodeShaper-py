@@ -9,7 +9,7 @@ ico = r'Assets/logo/logo_only_black.ico'
 
 from kivy.config import Config
 
-Config.set('graphics', 'width', '1200')
+Config.set('graphics', 'width', '1300')
 Config.set('graphics', 'height', '700')
 
 Config.set('kivy', 'window_icon', ico)

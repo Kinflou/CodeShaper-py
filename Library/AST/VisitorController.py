@@ -1,18 +1,18 @@
 ## System Imports
-import logging
 import time
+import logging
 from enum import IntEnum
 from threading import Thread
 
 
 ## Application Imports
-from Library.AST.CustomParseTreeVisitor import CustomParseTreeVisitor
 from Library.AST.interfaces import ASTSetInterface
+from Library.AST.CustomParseTreeVisitor import CustomParseTreeVisitor
 
 
 ## Library Imports
 from events import Events
-from antlr4 import InputStream, CommonTokenStream
+from antlr4 import InputStream, CommonTokenStream, ParserRuleContext
 
 
 class VisitorState(IntEnum):
@@ -68,15 +68,16 @@ class VisitorController(Events):
 		
 		t = time.perf_counter()
 		tree = self.__ast_set.get_root_context(parser)
-		tt = time.perf_counter() - t
+		total_time = time.perf_counter() - t
+		print(f'Took {total_time} to parse AST')
 		
 		self.visitor: CustomParseTreeVisitor = self.__ast_set.Visitor()
 		
-		context, location = self.visitor.visit(tree)
+		context = self.visitor.visit(tree)
 		content = self.__input_stream.getText(0, self.__input_stream.size)
 		
 		self.contexts.append(context)
-		self.locations.append(location)
+		self.locations.append(context.__class__.__name__.replace('Context', ''))
 		self.contents.append(content)
 	
 	def process(self):
@@ -97,21 +98,20 @@ class VisitorController(Events):
 			context = self.contexts[self.__index]
 			location = self.locations[self.__index]
 			
-			logging.getLogger('applog').info(f'Visiting {location.name}')
-			result = self.visitor.visitChildren(context)
+			logging.getLogger('applog').info(f'Visiting {location}')
+			context = self.visitor.visitChildren(context)
 			
-			if not result:
+			if not context:
 				self.__finish_process()
 				return
 			
-			if len(result) != 2:
-				raise Exception('Visits should return context and location')
+			if not isinstance(context, ParserRuleContext):
+				raise Exception('Visits should return one argument (the context)')
 			
-			context, location = result
 			content = self.visitor.context_text(self.__input_stream, context)
 			
 			self.contexts.append(context)
-			self.locations.append(location)
+			self.locations.append(context.__class__.__name__.replace('Context', ''))
 			self.contents.append(content)
 			
 			self.__index += 1
@@ -134,4 +134,5 @@ class VisitorController(Events):
 		self.__state = VisitorState.Finished
 		self.__processing = False
 		self.on_finish()
+
 

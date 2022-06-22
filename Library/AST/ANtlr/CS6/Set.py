@@ -4,7 +4,6 @@
 ## Application Imports
 from Library.AST.interfaces import ASTSetInterface
 from Library.AST.ANtlr.CS6.Visitor import CS6Visitor
-from Library.AST.ANtlr.CS6.Location import CS6Location
 from Library.AST.ANtlr.CS6.Generated.CSharpLexer import CSharpLexer
 from Library.AST.ANtlr.CS6.Generated.CSharpParser import CSharpParser
 
@@ -14,11 +13,12 @@ from Library.AST.ANtlr.CS6.Generated.CSharpParser import CSharpParser
 
 class CS6Set(ASTSetInterface):
 	
+	Name = 'CSharp6 Antlr4 AST'
+	Alias = 'cs6'
+	
 	Lexer = CSharpLexer
 	Parser = CSharpParser
 	Visitor = CS6Visitor
-	
-	Location = CS6Location
 	
 	@staticmethod
 	def get_root_context(parser: CSharpParser):

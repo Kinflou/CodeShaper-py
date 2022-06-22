@@ -54,20 +54,12 @@
                             ScrollView:
                                 id: patches_layout
 
-                        Tab:
-                            title: 'Action'
-                            icon: 'focus-field'
-
-                        Tab:
-                            title: 'Frames'
-                            icon: 'tray-full'
-
             BoxLayout:
                 orientation: 'vertical'
 
                 MDTabs:
                     tab_bar_height: 25
-                    text_color_active: get_color_from_hex("#ffd700")
+                    text_color_active: get_color_from_hex('#ffd700')
                     underline_color: app.theme_cls.primary_dark
 
                     Tab:
@@ -83,8 +75,14 @@
                                 TextInput:
                                     id: process_file
 
+                                    background_color: app.theme_cls.primary_color
+                                    foreground_color: app.theme_cls.secondary_text_color
+
                             TextInput:
                                 id: original_file
+
+                                background_color: app.theme_cls.primary_color
+                                foreground_color: app.theme_cls.secondary_text_color
 
                     Tab:
                         title: 'Project'
@@ -163,8 +161,8 @@
                                             pos: self.pos[0] - 10, self.pos[1] + 12
                                             size: 15, 15
 
-                                    size_hint: dp(.4), 1
-                                    padding: 22, 0
+                                    size_hint: dp(.5), 1
+                                    padding: 20, 0
                                     halign: 'center'
                                     text: 'Error'
 
@@ -176,89 +174,77 @@
                     id: visitor_layout
                     size_hint: 1, dp(.2)
 
-        BoxLayout:
-            canvas.before:
-                Color:
-                    rgba: .5, .5, .5, 1
-                Line:
-                    width: 1
-                    rectangle: self.x, self.y, self.width, self.height
+            Splitter:
+                size_hint: dp(.4), 1
+                strip_size: '5dp'
+                sizable_from: 'left'
 
-            size_hint: 1, dp(.2)
+                BoxLayout:
+                    canvas.before:
+                        Color:
+                            rgba: .5, .5, .5, 1
+                        Line:
+                            width: 1
+                            rectangle: self.x, self.y, self.width, self.height
 
-            ScrollView:
-                id: logs_scroll
+                    MDTabs:
+                        tab_bar_height: 25
+                        text_color_active: get_color_from_hex("#ffd700")
+                        underline_color: app.theme_cls.primary_dark
 
-                TextInput:
-                    id: logs
-                    size_hint: 1, None
-                    height: max(self.minimum_height, logs_scroll.height)
-                    disabled: True
-                    background_color: app.theme_cls.primary_color
-                    disabled_foreground_color: app.theme_cls.secondary_text_color
+                        Tab:
+                            title: 'Action'
+                            icon: 'focus-field'
+
+                            MDTabs:
+                                tab_bar_height: 25
+                                text_color_active: get_color_from_hex("#ffd700")
+                                underline_color: app.theme_cls.primary_dark
+
+                                Tab:
+                                    title: 'Properties'
+
+                                    ScrollView:
+                                        id: action_properties_layout
+
+                                Tab:
+                                    title: 'Resolution'
+
+                                    ScrollView:
+                                        id: action_resolution_layout
+
+                        Tab:
+                            title: 'Frames'
+                            icon: 'tray-full'
+
+                            ScrollView:
+                                id: frames_layout
+
+
+        Splitter:
+            strip_size: '10dp'
+            sizable_from: 'top'
+
+            size_hint: 1, dp(.3)
+
+            BoxLayout:
+                canvas.before:
+                    Color:
+                        rgba: .5, .5, .5, 1
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+
+                ScrollView:
+                    id: logs_scroll
+
+                    TextInput:
+                        id: logs
+                        size_hint: 1, None
+                        height: max(self.minimum_height, logs_scroll.height)
+                        disabled: True
+                        background_color: app.theme_cls.primary_color
+                        disabled_foreground_color: app.theme_cls.secondary_text_color
 
     NavigationBar:
-
-
-<VisitorController>:
-    canvas.before:
-        Color:
-            rgba: .5, .5, .5, 1
-        Line:
-            width: 1
-            rectangle: self.x, self.y, self.width, self.height
-
-    BoxLayout:
-        orientation: 'vertical'
-        padding: 10, 0
-
-        MDLabel:
-            text: 'Ready to start visiting'
-
-        BoxLayout:
-            padding: 0, 10
-
-            MDRectangleFlatIconButton:
-                id: play
-                icon: 'play'
-                text: 'Play'
-                on_release: root.play()
-
-            MDRectangleFlatIconButton:
-                icon: 'stop'
-                text: 'Stop'
-                on_release: root.stop()
-
-
-            MDLabel:
-                padding: 10, 10
-                text: root.file
-
-
-    BoxLayout:
-        orientation: 'vertical'
-        padding: 10, 0
-
-        MDLabel:
-            halign: 'right'
-            text: 'Time Elapsed'
-            text: root.time_elapsed
-
-        MDLabel:
-            halign: 'right'
-            text: root.visitor_type
-
-
-<BreakpointNode>:
-    height: max(label.texture_size[1] + dp(10), dp(24))
-
-    RoundButton:
-        size_hint: dp(.09), 1
-
-    Label:
-        id: label
-        size_hint: (.9, 1)
-        text_size: self.width, None
-        padding: 15, 0
-        text: "action"
 

@@ -1,0 +1,21 @@
+## System Imports
+
+
+## Application Imports
+
+
+## Library Imports
+
+
+<ActionPropertyNode>:
+    height: max(label.texture_size[1] + dp(10), dp(24))
+
+    Label:
+        id: label
+        size_hint: (.5, 1)
+
+    TextInput:
+        id: value
+        text_size: self.width, None
+        padding: 15, 0
+        text: 'property'
