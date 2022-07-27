@@ -10,7 +10,7 @@ import hjson
 from dataclasses_json import config, dataclass_json
 
 
-@dataclass(order=True)
+@dataclass(slots=True, order=True)
 class ShapingResolver:
 	
 	mode: str
@@ -21,14 +21,14 @@ class ShapingResolver:
 	default: str | None = None
 
 
-@dataclass(order=True)
+@dataclass(slots=True, order=True)
 class ShapingMaker:
 
 	prepare: str
 	make: str
 
 
-@dataclass(order=True)
+@dataclass(slots=True, order=True)
 class ShapingReplacer:
 	
 	location: str
@@ -40,7 +40,7 @@ class ShapingReplacer:
 	actions: 'ShapingActions' = field(default_factory=dict)
 
 
-@dataclass(order=True)
+@dataclass(slots=True, order=True)
 class ShapingBuilder:
 	
 	location: str
@@ -50,7 +50,7 @@ class ShapingBuilder:
 	actions: 'ShapingActions' = field(default_factory=dict)
 
 
-@dataclass(order=True)
+@dataclass(slots=True, order=True)
 class ShapingActions:
 
 	builders: dict[str, ShapingBuilder] = field(default_factory=dict)
@@ -60,7 +60,7 @@ class ShapingActions:
 
 	
 @dataclass_json
-@dataclass(order=True)  # TODO: Perhaps this data class can specify __slots__ (slots=True)
+@dataclass(slots=True, order=True)
 class ShapingPatch:
 	
 	alias: str

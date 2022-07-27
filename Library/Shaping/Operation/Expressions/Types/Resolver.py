@@ -29,17 +29,20 @@ class ResolverExpression(BaseExpression):
 		self.names = []
 	
 	def resolve_expression(self, content: str) -> str:
+		return self.resolve_expression_sub('test')
+		
+	def resolve_expression_sub(self, argument: str) -> str:
 		if not Modes.has(self.action.resolver.mode):
 			raise AttributeError(f"Specified mode '{self.action.resolver.mode}' does not exist in resolver modes")
 		
 		mode = Modes(self.action.resolver.mode)
 		
 		if mode == Modes.Switch:
-			if content in self.action.resolver.cases:
-				return self.action.resolver.cases[content]
+			if argument in self.action.resolver.cases:
+				return self.action.resolver.cases[argument]
 			
 			if not self.action.resolver.default:
-				raise AttributeError(f"No case found for value '{content}' in '{self.action.Name}'")
+				raise AttributeError(f"No case found for value '{argument}' in '{self.action.Name}'")
 			
 			return self.action.resolver.default
 		
@@ -60,7 +63,9 @@ class ResolverExpression(BaseExpression):
 				raise AttributeError(f"No item found for index '{index}' with expression "
 									 f"'{self.action.resolver.index}' in '{self.action.Name}'")
 			
-			return
+			return None
+		
+		return None
 	
 	@classmethod
 	def resolve_index_expression(cls, expression: str) -> int:
