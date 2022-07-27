@@ -85,8 +85,6 @@ class BuilderAction(ActionInterface):
 		self.location = location
 		self.content = content
 		
-		self.variables = regex.findall(self.builder.match, content)
-		
 		self.process_expressions()
 	
 	def process_expressions(self):
@@ -96,7 +94,7 @@ class BuilderAction(ActionInterface):
 		if self.expressions is not None:
 			for expression in self.expressions:
 				expression.prepare_expression()
-				expression.process_expression()
+				expression.process_expression(self.content)
 				
 				if expression.can_resolve():
 					self.built = expression.resolve_expression(self.content)

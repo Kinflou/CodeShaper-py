@@ -9,6 +9,7 @@ from Library.Shaping.Operation.Expressions.interfaces import ExpressionInterface
 
 
 ## Library Imports
+import regex
 
 
 class BaseExpression(ExpressionInterface, ABC):
@@ -30,7 +31,26 @@ class BaseExpression(ExpressionInterface, ABC):
 		self.groups: list[list[str]] | None = None
 		self.names: list[dict[str, int]] | None = None
 	
-	def resolve_expression_variables(self, content: str):
+	def prepare_expression(self):
+		if self._frames:
+			return
+		
+		self._frames = search.search_expressions(self.action.PatchController, self.action.Expression, self.action)
+	
+	def can_resolve(self) -> bool:
+		# TODO: Check if parent is ready to resolve and if this action and expression are also ready
+		return True
+		
+		if not self._frames:
+			return False
+		
+		for expression in self._frames:
+			if not expression.can_resolve():
+				return False
+		
+		return True
+	
+	def resolve_expression_locals(self, content: str):
 		local_groups = [
 			content
 		]
@@ -42,20 +62,6 @@ class BaseExpression(ExpressionInterface, ABC):
 		self.groups.append(local_groups)
 		self.names.append(local_names)
 	
-	def prepare_expression(self):
-		if self._frames:
-			return
-		
-		self._frames = search.search_expressions(self.action.PatchController, self.action.Expression, self.action)
+	def resolve_expression(self, content: str):
+		raise NotImplementedError()
 	
-	def can_resolve(self) -> bool:
-		# TODO: Check if parent is ready to resolve and if this action and expression are also ready
-		if not self._frames:
-			return False
-		
-		for expression in self._frames:
-			if not expression.can_resolve():
-				return False
-		
-		return True
-

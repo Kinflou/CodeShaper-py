@@ -20,17 +20,22 @@ class BuilderExpression(BaseExpression):
 		super().__init__(action, parent)
 		
 		self.action = action
-		
-	def process_expression(self):
+	
+	def prepare_expression(self):
+		super().prepare_expression()
+	
+	def process_expression(self, content: str):
 		if self.groups:
 			return
 		
 		self.groups = []
 		self.names = []
 		
-		for match in regex.finditer(self.action.builder.match, self.parent.content):
+		for match in regex.finditer(self.action.builder.match, content):
 			self.groups.append(match.groups())
 			self.names.append(match.re.groupindex)
+		
+		self.resolve_expression_locals(content)
 	
 	def resolve_expression(self, content: str) -> str:
 		result = self.action.Expression
